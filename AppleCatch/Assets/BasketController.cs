@@ -7,20 +7,22 @@ public class BasketController : MonoBehaviour{
     public AudioClip appleSE;
     public AudioClip bombSE;
     AudioSource aud;
+	GameObject director;
 
     void Start(){
+		this.director = GameObject.Find ("GameDirector");
         this.aud = GetComponent<AudioSource>();
     }
 
     void OnTriggerEnter(Collider other){
-        if (other.gameObject.tag == "Apple")
-        {
+        if (other.gameObject.tag == "Apple"){
+			this.director.GetComponent<GameDirector> ().GetApple ();
             this.aud.PlayOneShot(this.appleSE);
-        }
-        else
-        {
+        } else {
+			this.director.GetComponent<GameDirector> ().GetBomb ();
             this.aud.PlayOneShot(this.bombSE);
         }
+		Destroy (other.gameObject);
     }
 
     void Update(){
@@ -32,8 +34,6 @@ public class BasketController : MonoBehaviour{
                 float z = Mathf.RoundToInt(hit.point.z);
                 transform.position = new Vector3(x, 0, z);
             }
-
         }
-
     }
 }
